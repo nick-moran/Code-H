@@ -7,24 +7,21 @@ public class PlayerMove : MonoBehaviour
     public bool bobbing = true;
     public Rigidbody rb;
     public float speed = 10f;
-    public Camera cam;
+    public Transform cam;
     private Vector3 movement = new Vector3();
     private Vector3 height;
     
-    public float dX = 2f;
     public float sensitivity = 10f;
     public float cycleAmt = 10f;
     public float amplitude = 0.1f;
     public float distFromPlayer = 2.29f;
     public float crouchSpeed = 5f;
-    private Vector3 rotateVector = new Vector3();
-    private float translateX;
     
     //WILL BE DELETED ONCE WE HAVE A CROUCH ANIMATION
     private Vector3 playerScale = new Vector3();
     private Vector3 modifiedPlayerScale = new Vector3();
-    private float timeStart = 0.0f;
-
+    private Vector3 rotateVector = new Vector3();
+    private float translateX;
     private PlayerStateManager pM;
     void Start()
     {
@@ -40,10 +37,8 @@ public class PlayerMove : MonoBehaviour
     }
 
     void Update(){
-        translateX = Input.GetAxis("Mouse X") * dX;
-        rotateVector.Set(0, translateX, 0);
-        rotateVector*=sensitivity;
-        transform.Rotate(rotateVector);
+
+
 
         if(Input.GetKey("left shift")){
             pM.isCrouching();
@@ -67,15 +62,7 @@ public class PlayerMove : MonoBehaviour
             transform.localScale = playerScale;
         }
 
-        movement = transform.rotation * move() * activeSpeed;
-
-        if(bobbing && movement != Vector3.zero){
-            cam.transform.position = Vector3.Lerp(cam.transform.position,
-            new Vector3(cam.transform.position.x, 
-                transform.position.y+distFromPlayer+amplitude*(Mathf.Sin(cycleAmt*Time.time)), 
-                cam.transform.position.z), Time.deltaTime*100);
-        }
-
+        // movement = transform.rotation * move() * activeSpeed;
 
     }
 
