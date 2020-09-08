@@ -20,7 +20,6 @@ public class PlayerMove : MonoBehaviour
     //WILL BE DELETED ONCE WE HAVE A CROUCH ANIMATION
     private Vector3 playerScale = new Vector3();
     private Vector3 modifiedPlayerScale = new Vector3();
-    private Vector3 rotateVector = new Vector3();
     private float translateX;
     private PlayerStateManager pM;
     void Start()
@@ -62,8 +61,14 @@ public class PlayerMove : MonoBehaviour
             transform.localScale = playerScale;
         }
 
-        // movement = transform.rotation * move() * activeSpeed;
+        Quaternion camRot = cam.rotation;
+        camRot.x = 0;
+        camRot.z = 0;
+        movement = transform.rotation * move() * activeSpeed;
 
+        if(movement != Vector3.zero){
+            transform.rotation = Quaternion.Slerp(transform.rotation, camRot, sensitivity * Time.deltaTime);
+        }
     }
 
     void FixedUpdate()
